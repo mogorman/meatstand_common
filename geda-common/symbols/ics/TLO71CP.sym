@@ -1,0 +1,96 @@
+v 20110115 2
+B 200 0 1800 1000 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+P 0 800 200 800 1 0 0
+{
+T 0 800 5 10 0 0 0 0 1
+pintype=unknown
+T 255 795 5 10 1 1 0 0 1
+pinlabel=Offset N1
+T 105 845 5 10 1 1 0 6 1
+pinnumber=1
+T 0 800 5 10 0 0 0 0 1
+pinseq=0
+}
+P 0 600 200 600 1 0 0
+{
+T 0 600 5 10 0 0 0 0 1
+pintype=unknown
+T 255 595 5 10 1 1 0 0 1
+pinlabel=IN-
+T 105 645 5 10 1 1 0 6 1
+pinnumber=2
+T 0 600 5 10 0 0 0 0 1
+pinseq=0
+}
+P 0 400 200 400 1 0 0
+{
+T 0 400 5 10 0 0 0 0 1
+pintype=unknown
+T 255 395 5 10 1 1 0 0 1
+pinlabel=IN+
+T 105 445 5 10 1 1 0 6 1
+pinnumber=3
+T 0 400 5 10 0 0 0 0 1
+pinseq=0
+}
+P 0 200 200 200 1 0 0
+{
+T 0 200 5 10 0 0 0 0 1
+pintype=unknown
+T 255 195 5 10 1 1 0 0 1
+pinlabel=Vcc-
+T 105 245 5 10 1 1 0 6 1
+pinnumber=4
+T 0 200 5 10 0 0 0 0 1
+pinseq=0
+}
+P 2200 800 2000 800 1 0 0
+{
+T 2200 800 5 10 0 0 0 6 1
+pintype=unknown
+T 1945 795 5 10 1 1 0 6 1
+pinlabel=NC
+T 2095 845 5 10 1 1 0 0 1
+pinnumber=8
+T 2200 800 5 10 0 0 0 6 1
+pinseq=0
+}
+P 2200 600 2000 600 1 0 0
+{
+T 2200 600 5 10 0 0 0 6 1
+pintype=unknown
+T 1945 595 5 10 1 1 0 6 1
+pinlabel=Vcc+
+T 2095 645 5 10 1 1 0 0 1
+pinnumber=7
+T 2200 600 5 10 0 0 0 6 1
+pinseq=0
+}
+P 2200 400 2000 400 1 0 0
+{
+T 2200 400 5 10 0 0 0 6 1
+pintype=unknown
+T 1945 395 5 10 1 1 0 6 1
+pinlabel=Out
+T 2095 445 5 10 1 1 0 0 1
+pinnumber=6
+T 2200 400 5 10 0 0 0 6 1
+pinseq=0
+}
+P 2200 200 2000 200 1 0 0
+{
+T 2200 200 5 10 0 0 0 6 1
+pintype=unknown
+T 1945 195 5 10 1 1 0 6 1
+pinlabel=Offset N2
+T 2095 245 5 10 1 1 0 0 1
+pinnumber=5
+T 2200 200 5 10 0 0 0 6 1
+pinseq=0
+}
+T 1700 1000 8 10 1 1 0 0 1
+refdes=U?
+T 500 500 8 10 0 1 0 0 1
+footprint=DIP8
+T 200 1000 8 10 1 1 0 0 1
+value=TLO71CP

@@ -1,0 +1,25 @@
+
+Element["" "" "" "" 50.00mil 250.00mil 20.00mil 60.00mil 0 100 ""]
+(
+	Pin[0.0000 160.00mil 39.37mil 32.00mil 42.00mil 32.00mil "" "1" ""]
+	Pin[-10.97mil -210.83mil 39.37mil 32.00mil 42.00mil 32.00mil "" "2" ""]
+	Pad[71.13mil -190.28mil 118.38mil -190.28mil 15.74mil 20.00mil 35.74mil "" "1" "square,edge2"]
+	Pad[71.13mil -166.65mil 118.38mil -166.65mil 15.74mil 20.00mil 35.74mil "" "2" "square,edge2"]
+	Pad[71.13mil -143.03mil 118.38mil -143.03mil 15.74mil 20.00mil 35.74mil "" "3" "square,edge2"]
+	Pad[71.13mil -119.41mil 118.38mil -119.41mil 15.74mil 20.00mil 35.74mil "" "4" "square,edge2"]
+	Pad[71.13mil -95.79mil 118.38mil -95.79mil 15.74mil 20.00mil 35.74mil "" "5" "square,edge2"]
+	Pad[71.13mil -72.17mil 118.38mil -72.17mil 15.74mil 20.00mil 35.74mil "" "6" "square,edge2"]
+	Pad[71.13mil -48.54mil 118.38mil -48.54mil 15.74mil 20.00mil 35.74mil "" "7" "square,edge2"]
+	Pad[71.13mil -24.92mil 118.38mil -24.92mil 15.74mil 20.00mil 35.74mil "" "8" "square,edge2"]
+	Pad[71.13mil -1.30mil 118.38mil -1.30mil 15.74mil 20.00mil 35.74mil "" "9" "square,edge2"]
+	Pad[71.13mil 22.32mil 118.38mil 22.32mil 15.74mil 20.00mil 35.74mil "" "10" "square,edge2"]
+	Pad[71.13mil 45.95mil 118.38mil 45.95mil 15.74mil 20.00mil 35.74mil "" "11" "square,edge2"]
+	Pad[71.13mil 69.57mil 118.38mil 69.57mil 15.74mil 20.00mil 35.74mil "" "12" "square,edge2"]
+	Pad[71.13mil 93.19mil 118.38mil 93.19mil 15.74mil 20.00mil 35.74mil "" "13" "square,edge2"]
+	Pad[71.13mil 116.81mil 118.38mil 116.81mil 15.74mil 20.00mil 35.74mil "" "14" "square,edge2"]
+	ElementLine [-45.00mil 199.41mil -45.00mil -245.00mil 10.00mil]
+	ElementLine [151.85mil 199.41mil -45.00mil 199.41mil 10.00mil]
+	ElementLine [151.85mil -245.00mil 151.85mil 199.41mil 10.00mil]
+	ElementLine [-45.00mil -245.00mil 151.85mil -245.00mil 10.00mil]
+
+	)

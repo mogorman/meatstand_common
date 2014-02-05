@@ -1,0 +1,2 @@
+(component-library "../meatstand-common/geda-common/symbols")
+(component-library "../meatstand-common/geda-common/symbols/ics")

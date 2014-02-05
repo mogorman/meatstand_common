@@ -1,0 +1,98 @@
+PCBNAME=FILENAME
+REV=0.0
+NICKNAME="Mog"
+NUMBER_OF_BOARDS=5
+STENCIL="No"
+VIAS="covered"
+SOLDERMASK="red"
+SILKSCREEN="white"
+THICKNESS="1.6mm"
+FINISH="easy-solder"
+COPPER="1 oz"
+SHIPPING="DHL"
+RUSH="48 hour rush"
+
+
+
+all: clean update common hackvana-zip hackvana-order post_build_cleanup
+
+clean:
+	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb
+
+update:
+	refdes_renum --gentle production/$(PCBNAME).sch
+	gsch2pcb -v -v --elements-dir ./../../meatstand_common/geda-common/pcb-elements/ ${PCBNAME}.sch
+	../meatstand_common/schematics/net2pcb.sh $(PCBNAME)
+
+common:
+	gschem -q -p -o $(PCBNAME).ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME).sch
+	ps2pdf $(PCBNAME).ps schematic.pdf
+	pdftoppm -png schematic.pdf > schematic.png
+	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
+	pcb -x png --dpi 1000 --photo-mode --photo-mask-colour $(SOLDERMASK) --photo-silk-colour $(SILKSCREEN) --outfile front.png $(PCBNAME)_make.pcb
+	pcb -x png --dpi 1000 --photo-mode --photo-mask-colour $(SOLDERMASK) --photo-silk-colour $(SILKSCREEN) --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
+	convert front.png -trim front.png
+	convert back.png -trim back.png
+	convert -border 25x25 -bordercolor "#000000"  front.png front_make.png
+	convert -border 25x25 -bordercolor "#000000"  back.png back_make.png
+	convert +append front_make.png back_make.png board.png
+	
+hackvana-zip:
+	@mkdir gerbers
+	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
+	pcb -x gerber $(PCBNAME)_make.pcb
+	pcb -x bom $(PCBNAME)_make.pcb
+	@mv $(PCBNAME)_make.bom bom
+	@mv $(PCBNAME)_make.xy xy
+	@cp $(PCBNAME)_make.bottom.gbr     $(PCBNAME).gbl
+	@cp $(PCBNAME)_make.bottomsilk.gbr      $(PCBNAME).gbo
+	@cp $(PCBNAME)_make.bottommask.gbr      $(PCBNAME).gbs
+	@cp $(PCBNAME)_make.top.gbr         $(PCBNAME).gtl
+	@cp $(PCBNAME)_make.topsilk.gbr     $(PCBNAME).gto
+	@cp $(PCBNAME)_make.topmask.gbr     $(PCBNAME).gts
+	@cp $(PCBNAME)_make.plated-drill.cnc  $(PCBNAME).drl
+	@cp $(PCBNAME)_make.unplated-drill.cnc  $(PCBNAME)_NPTH.drl
+	@cp $(PCBNAME)_make.outline.gbr $(PCBNAME).gm1
+	@zip $(PCBNAME)_rev$(REV).zip $(PCBNAME).gbl $(PCBNAME).gbo \
+	    $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto \
+	    $(PCBNAME).gts $(PCBNAME).drl $(PCBNAME)_NPTH.drl \
+	    $(PCBNAME).gm1 README.txt
+	@mv *.gbr gerbers/
+	@mv *.cnc gerbers/
+
+hackvana-order:
+	$(eval X:= $(shell identify front.png| cut -f3 -d' ' | cut -f1 -d'x'))
+	$(eval X:= $(shell echo "0.0254*$(X)" | bc))
+	$(eval Y:= $(shell identify front.png| cut -f3 -d' ' | cut -f2 -d'x'))
+	$(eval Y:= $(shell echo "0.0254*$(Y)" | bc))
+	@echo ""
+	@echo ""
+	@echo ""
+	@echo ""
+	@echo "Nickname: $(NICKNAME)" > order
+	@echo "Number of Boards:  $(NUMBER_OF_BOARDS)" >> order
+	@echo "Stencil: $(STENCIL)" >> order
+	@echo "Vias: $(VIAS)" >> order
+	@echo "Soldermask: $(SOLDERMASK)" >> order
+	@echo "Silkscreen: $(SILKSCREEN)" >> order
+	@echo "Board thickness: $(THICKNESS)" >> order
+	@echo "Board finish: $(FINISH)" >> order
+	@echo "Copper: $(COPPER)" >> order
+	@echo "Board size: $(X)mm X $(Y)mm" >> order
+	@echo "Shipping: $(SHIPPING)" >> order
+	@echo "Rush: $(RUSH)" >> order
+	@echo "" >> order
+	@echo "" >> order
+	@echo "thanks man" >> order
+	@echo "" >> order
+	@echo "" >> order
+	@more order
+
+post_build_cleanup:
+	@rm -f front.png back.png
+	@rm -f $(PCBNAME).ps
+	@rm -f back_make.png front_make.png $(PCBNAME)_make.pcb
+	@rm -f $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gm1 \
+	    $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto \
+	    $(PCBNAME).gts $(PCBNAME).drl $(PCBNAME)_NPTH.drl
+
