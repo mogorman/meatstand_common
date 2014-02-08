@@ -15,7 +15,7 @@ RUSH="48 hour rush"
 all: clean update common hackvana-zip hackvana-order post_build_cleanup
 
 clean:
-	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb
+	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd
 
 update:
 	refdes_renum --gentle $(PCBNAME).sch
