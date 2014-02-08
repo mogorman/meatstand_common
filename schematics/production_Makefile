@@ -18,7 +18,7 @@ clean:
 	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb
 
 update:
-	refdes_renum --gentle production/$(PCBNAME).sch
+	refdes_renum --gentle $(PCBNAME).sch
 	gsch2pcb -v -v --elements-dir ./../../meatstand_common/geda-common/pcb-elements/ ${PCBNAME}.sch
 	../meatstand_common/schematics/net2pcb.sh $(PCBNAME)
 
