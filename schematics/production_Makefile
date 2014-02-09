@@ -19,8 +19,9 @@ clean:
 
 update:
 	refdes_renum --gentle $(PCBNAME).sch
-	gsch2pcb -v -v --elements-dir ./../../meatstand_common/geda-common/pcb-elements/ ${PCBNAME}.sch
+	gsch2pcb -v -v --elements-dir ./../meatstand_common/geda-common/pcb-elements/ ${PCBNAME}.sch
 	../meatstand_common/schematics/net2pcb.sh $(PCBNAME)
+	../meatstand_common/schematics/vfont.sh $(PCBNAME)
 
 common:
 	gschem -q -p -o $(PCBNAME).ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME).sch

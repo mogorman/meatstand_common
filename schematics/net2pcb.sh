@@ -1,5 +1,4 @@
 #!/bin/bash
-cd production
 cat $1.pcb > new.pcb
 echo "NetList()" >> new.pcb
 echo "(" >> new.pcb
