@@ -20,7 +20,8 @@ clean:
 update:
 	refdes_renum --gentle $(PCBNAME).sch
 	gsch2pcb -v -v --elements-dir ./../meatstand_common/geda-common/pcb-elements/ ${PCBNAME}.sch
-	../meatstand_common/schematics/net2pcb.sh $(PCBNAME)
+#	this is harder than i thought will revisit later
+#	../meatstand_common/schematics/net2pcb.sh $(PCBNAME)
 	../meatstand_common/schematics/vfont.sh $(PCBNAME)
 
 common:
