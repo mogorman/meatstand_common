@@ -15,7 +15,7 @@ RUSH="48 hour rush"
 all: clean update common hackvana-zip hackvana-order post_build_cleanup
 
 clean:
-	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb
+	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order
 
 update:
 	refdes_renum --gentle $(PCBNAME).sch
@@ -99,6 +99,7 @@ hackvana-order:
 
 post_build_cleanup:
 	@rm -f front.png back.png
+	@rm -f $(PCBNAME).net $(PCBNAME).cmd
 	@rm -f $(PCBNAME).ps
 	@rm -f back_make.png front_make.png $(PCBNAME)_make.pcb
 	@rm -f $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gm1 \
