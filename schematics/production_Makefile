@@ -18,23 +18,17 @@ clean:
 	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb
 
 update:
-#	refdes_renum --gentle $(PCBNAME).sch
-#	$(if $(wildcard $(PCBNAME).pcb),$(error "file is existing"),$(error "<file> is missing, bye bye."))
+	refdes_renum --gentle $(PCBNAME).sch
 	$(if $(wildcard $(PCBNAME).pcb), \
 		@echo UPDATING; \
-		gsch2pcb --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch; \
+		gsch2pcb -v -v --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch; \
 		../meatstand_common/schematics/net2pcb.sh $(PCBNAME); \
 	, \
 		@echo FIRST RUN; \
-		gsch2pcb --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch; \
+		gsch2pcb -v -v --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch; \
 		../meatstand_common/schematics/net2pcb.sh $(PCBNAME); \
 		../meatstand_common/schematics/vfont.sh $(PCBNAME); \
 	)
-#	if [ -a "$(PCBNAME).pcb" ]; then echo not first run; else echo first run; fi;
-#	gsch2pcb -v -v --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch
-#	this is harder than i thought will revisit later
-#	../meatstand_common/schematics/net2pcb.sh $(PCBNAME)
-#	../meatstand_common/schematics/vfont.sh $(PCBNAME)
 
 common:
 	gschem -q -p -o $(PCBNAME).ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME).sch
