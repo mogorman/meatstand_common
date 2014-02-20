@@ -1,15 +1,39 @@
+ifndef NICKNAME
 NICKNAME="Mog"
+endif
+ifndef NUMBER_OF_BOARDS
 NUMBER_OF_BOARDS=5
+endif
+ifndef STENCIL
 STENCIL="No"
+endif
+ifndef VIAS
 VIAS="covered"
+endif
+ifndef SOLDERMASK
 SOLDERMASK="red"
+endif
+ifndef SILKSCREEN
 SILKSCREEN="white"
+endif
+ifndef THICKNESS
 THICKNESS="1.6mm"
+endif
+ifndef FINISH
 FINISH="easy-solder"
+endif
+ifndef COPPER
 COPPER="1 oz"
+endif
+ifndef SHIPPING
 SHIPPING="DHL"
+endif
+ifndef RUSH
 RUSH="48 hour rush"
-
+endif
+ifndef STACK
+STACK=+
+endif
 
 
 all: clean update common hackvana-zip hackvana-order post_build_cleanup
@@ -44,7 +68,7 @@ common:
 	convert back.png -trim back.png
 	convert -border 25x25 -bordercolor "#000000"  front.png front_make.png
 	convert -border 25x25 -bordercolor "#000000"  back.png back_make.png
-	convert +append front_make.png back_make.png board.png
+	convert $(STACK)append front_make.png back_make.png board.png
 
 hackvana-zip:
 	@mkdir gerbers
