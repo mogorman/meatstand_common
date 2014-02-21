@@ -34,6 +34,14 @@ endif
 ifndef STACK
 STACK=+
 endif
+ifndef CUSTOMPCB
+CUSTOMPCB=pcb
+endif
+ifndef CUSTOMPCB_ARGS
+CUSTOMPCB_ARGS=""
+endif
+
+
 
 
 all: clean update common hackvana-zip hackvana-order post_build_cleanup
@@ -59,8 +67,8 @@ common:
 	ps2pdf $(PCBNAME).ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
-	pcb -x png --dpi 1000 --photo-mode --outfile front.png $(PCBNAME)_make.pcb
-	pcb -x png --dpi 1000 --photo-mode --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) $(CUSTOMPCB_ARGS) -x png --dpi 1000 --photo-mode --outfile front.png $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) $(CUSTOMPCB_ARGS) -x png --dpi 1000 --photo-mode --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
 #older pcb tim uses doesnt have this option so turning it off by default
 #	pcb -x png --dpi 1000 --photo-mode --photo-mask-colour $(SOLDERMASK) --photo-silk-colour $(SILKSCREEN) --outfile front.png $(PCBNAME)_make.pcb
 #	pcb -x png --dpi 1000 --photo-mode --photo-mask-colour $(SOLDERMASK) --photo-silk-colour $(SILKSCREEN) --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
@@ -73,8 +81,8 @@ common:
 hackvana-zip:
 	@mkdir gerbers
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
-	pcb -x gerber $(PCBNAME)_make.pcb
-	pcb -x bom $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x gerber $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x bom $(PCBNAME)_make.pcb
 	@mv $(PCBNAME)_make.bom bom
 	@mv $(PCBNAME)_make.xy xy
 	@cp $(PCBNAME)_make.bottom.gbr     $(PCBNAME).gbl
