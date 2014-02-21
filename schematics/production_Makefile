@@ -67,7 +67,7 @@ common:
 	ps2pdf $(PCBNAME).ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
-	$(CUSTOMPCB) -x png --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS ) --outfile front.png $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x png --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS) --outfile front.png $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x png --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS) --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
 #older pcb tim uses doesnt have this option so turning it off by default
 #	pcb -x png --dpi 1000 --photo-mode --photo-mask-colour $(SOLDERMASK) --photo-silk-colour $(SILKSCREEN) --outfile front.png $(PCBNAME)_make.pcb
