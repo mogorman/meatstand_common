@@ -38,7 +38,7 @@ ifndef CUSTOMPCB
 CUSTOMPCB=pcb
 endif
 ifndef CUSTOMPCB_ARGS
-CUSTOMPCB_ARGS=""
+CUSTOMPCB_ARGS=
 endif
 
 
