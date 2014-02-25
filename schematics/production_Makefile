@@ -81,7 +81,7 @@ common:
 hackvana-zip:
 	@mkdir gerbers
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
-	$(CUSTOMPCB) -x gerber $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x gerber --all-layers --verbose $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x bom $(PCBNAME)_make.pcb
 	@mv $(PCBNAME)_make.bom bom
 	@mv $(PCBNAME)_make.xy xy
