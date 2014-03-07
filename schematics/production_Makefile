@@ -127,15 +127,15 @@ hackvana-zip:
 	$(CUSTOMPCB) -x bom $(PCBNAME)_make.pcb
 	@mv $(PCBNAME)_make.bom bom
 	@mv $(PCBNAME)_make.xy xy
-	@cp $(PCBNAME)_make.bottom.gbr     hackvana_gerbers/$(PCBNAME).gbl
-	@cp $(PCBNAME)_make.bottomsilk.gbr      hackvana_gerbers/$(PCBNAME).gbo
-	@cp $(PCBNAME)_make.bottommask.gbr      hackvana_gerbers/$(PCBNAME).gbs
-	@cp $(PCBNAME)_make.top.gbr         hackvana_gerbers/$(PCBNAME).gtl
-	@cp $(PCBNAME)_make.topsilk.gbr     hackvana_gerbers/$(PCBNAME).gto
-	@cp $(PCBNAME)_make.topmask.gbr     hackvana_gerbers/$(PCBNAME).gts
-	@cp $(PCBNAME)_make.plated-drill.cnc  hackvana_gerbers/$(PCBNAME).drl
+	@cp $(PCBNAME)_make.bottom.gbr     hackvana_gerbers/$(PCBNAME).back.gbl
+	@cp $(PCBNAME)_make.bottomsilk.gbr      hackvana_gerbers/$(PCBNAME).backsilk.gbo
+	@cp $(PCBNAME)_make.bottommask.gbr      hackvana_gerbers/$(PCBNAME).backmask.gbs
+	@cp $(PCBNAME)_make.top.gbr         hackvana_gerbers/$(PCBNAME).front.gtl
+	@cp $(PCBNAME)_make.topsilk.gbr     hackvana_gerbers/$(PCBNAME).frontsilk.gto
+	@cp $(PCBNAME)_make.topmask.gbr     hackvana_gerbers/$(PCBNAME).frontmask.gts
+	@cp $(PCBNAME)_make.plated-drill.cnc  hackvana_gerbers/$(PCBNAME).plated-drill.drl
 	@cp $(PCBNAME)_make.unplated-drill.cnc  hackvana_gerbers/$(PCBNAME)_NPTH.drl
-	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).gm1
+	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).outline.gbr
 	@cp $(PCBNAME)_make_mfg.bottomsilk.gbr hackvana_gerbers/mfgcode.gbo 2>/dev/null ||:
 	@cp $(PCBNAME)_make_mfg.topsilk.gbr hackvana_gerbers/mfgcode.gto 2>/dev/null ||:
 	@cd hackvana_gerbers/ ; zip ../$(PCBNAME)_rev$(REV).zip *
