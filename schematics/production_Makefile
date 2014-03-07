@@ -91,7 +91,7 @@ update:
 photos:
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).sch > $(PCBNAME)_make.sch
 	@sed -i -e "s/GIT_REV/`git rev-parse --short HEAD`/" $(PCBNAME)_make.sch
-	gschem -q -p -o $(PCBNAME)_make.ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME)_make.sch
+	gschem -q -p -o $(PCBNAME)_make.ps -s ./../meatstand_common/schematics/print.scm $(PCBNAME)_make.sch
 	ps2pdf $(PCBNAME)_make.ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
