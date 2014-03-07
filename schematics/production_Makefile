@@ -44,10 +44,10 @@ endif
 
 
 
-all: clean update common hackvana-zip hackvana-order post_build_cleanup
+all: clean update hackvana-zip hackvana-order post_build_cleanup photos
 
 clean:
-	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order
+	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order
 
 update:
 	refdes_renum --gentle $(PCBNAME).sch
@@ -62,16 +62,13 @@ update:
 		../meatstand_common/schematics/vfont.sh $(PCBNAME); \
 	)
 
-common:
+photos:
 	gschem -q -p -o $(PCBNAME).ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME).sch
 	ps2pdf $(PCBNAME).ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x png --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS) --outfile front.png $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x png --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS) --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
-#older pcb tim uses doesnt have this option so turning it off by default
-#	pcb -x png --dpi 1000 --photo-mode --photo-mask-colour $(SOLDERMASK) --photo-silk-colour $(SILKSCREEN) --outfile front.png $(PCBNAME)_make.pcb
-#	pcb -x png --dpi 1000 --photo-mode --photo-mask-colour $(SOLDERMASK) --photo-silk-colour $(SILKSCREEN) --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
 	convert front.png -trim front.png
 	convert back.png -trim back.png
 	convert -border 25x25 -bordercolor "#000000"  front.png front_make.png
@@ -80,24 +77,43 @@ common:
 
 hackvana-zip:
 	@mkdir gerbers
-	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
+	@mkdir hackvana_gerbers
+	@grep -v HACKVANA_S $(PCBNAME).pcb | grep -v  HACKVANA_C > $(PCBNAME)_make.pcb
+	@sed -i -e 's/XXX/$(REV)/' $(PCBNAME)_make.pcb
+	@grep "^FileVersion\[" $(PCBNAME).pcb |head -n1 > $(PCBNAME)_make_mfg.pcb
+	@grep "^PCB\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
+	@grep "^Grid\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
+	@grep "^Groups\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
+	@grep "^Styles\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
+	@../meatstand_common/schematics/vfont.sh $(PCBNAME)_make_mfg
+	@grep "^Attribute(" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
+	@echo 'Layer(12 "silk")' >> $(PCBNAME)_make_mfg.pcb
+	@echo '(' >> $(PCBNAME)_make_mfg.pcb
+	@grep HACKVANA_C $(PCBNAME).pcb |head -n1 >>$(PCBNAME)_make_mfg.pcb
+	@echo ')' >> $(PCBNAME)_make_mfg.pcb
+	@echo 'Layer(11 "silk")' >> $(PCBNAME)_make_mfg.pcb
+	@echo '(' >> $(PCBNAME)_make_mfg.pcb
+	@grep HACKVANA_S $(PCBNAME).pcb|head -n1 >>$(PCBNAME)_make_mfg.pcb
+	@echo ')' >> $(PCBNAME)_make_mfg.pcb
+	@sed -i -e 's/HACKVANA_S/XxXxXxXxXxXx/' $(PCBNAME)_make_mfg.pcb
+	@sed -i -e 's/HACKVANA_C/XxXxXxXxXxXx/' $(PCBNAME)_make_mfg.pcb
+	$(CUSTOMPCB) -x gerber --verbose $(PCBNAME)_make_mfg.pcb
 	$(CUSTOMPCB) -x gerber --all-layers --verbose $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x bom $(PCBNAME)_make.pcb
 	@mv $(PCBNAME)_make.bom bom
 	@mv $(PCBNAME)_make.xy xy
-	@cp $(PCBNAME)_make.bottom.gbr     $(PCBNAME).gbl
-	@cp $(PCBNAME)_make.bottomsilk.gbr      $(PCBNAME).gbo
-	@cp $(PCBNAME)_make.bottommask.gbr      $(PCBNAME).gbs
-	@cp $(PCBNAME)_make.top.gbr         $(PCBNAME).gtl
-	@cp $(PCBNAME)_make.topsilk.gbr     $(PCBNAME).gto
-	@cp $(PCBNAME)_make.topmask.gbr     $(PCBNAME).gts
-	@cp $(PCBNAME)_make.plated-drill.cnc  $(PCBNAME).drl
-	@cp $(PCBNAME)_make.unplated-drill.cnc  $(PCBNAME)_NPTH.drl
-	@cp $(PCBNAME)_make.outline.gbr $(PCBNAME).gm1
-	@zip $(PCBNAME)_rev$(REV).zip $(PCBNAME).gbl $(PCBNAME).gbo \
-	    $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto \
-	    $(PCBNAME).gts $(PCBNAME).drl $(PCBNAME)_NPTH.drl \
-	    $(PCBNAME).gm1 README.txt
+	@cp $(PCBNAME)_make.bottom.gbr     hackvana_gerbers/$(PCBNAME).gbl
+	@cp $(PCBNAME)_make.bottomsilk.gbr      hackvana_gerbers/$(PCBNAME).gbo
+	@cp $(PCBNAME)_make.bottommask.gbr      hackvana_gerbers/$(PCBNAME).gbs
+	@cp $(PCBNAME)_make.top.gbr         hackvana_gerbers/$(PCBNAME).gtl
+	@cp $(PCBNAME)_make.topsilk.gbr     hackvana_gerbers/$(PCBNAME).gto
+	@cp $(PCBNAME)_make.topmask.gbr     hackvana_gerbers/$(PCBNAME).gts
+	@cp $(PCBNAME)_make.plated-drill.cnc  hackvana_gerbers/$(PCBNAME).drl
+	@cp $(PCBNAME)_make.unplated-drill.cnc  hackvana_gerbers/$(PCBNAME)_NPTH.drl
+	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).gm1
+	@cp $(PCBNAME)_make_mfg.bottomsilk.gbr hackvana_gerbers/mfgcode.gbo 2>/dev/null ||:
+	@cp $(PCBNAME)_make_mfg.topsilk.gbr hackvana_gerbers/mfgcode.gto 2>/dev/null ||:
+	@cd hackvana_gerbers/ ; zip ../$(PCBNAME)_rev$(REV).zip *
 	@mv *.gbr gerbers/
 	@mv *.cnc gerbers/
 
@@ -131,6 +147,7 @@ hackvana-order:
 
 post_build_cleanup:
 	@rm -f front.png back.png
+	@rm -f $(PCBNAME)_make_mfg.pcb
 	@rm -f $(PCBNAME).net $(PCBNAME).cmd
 	@rm -f $(PCBNAME).ps
 	@rm -f back_make.png front_make.png $(PCBNAME)_make.pcb
