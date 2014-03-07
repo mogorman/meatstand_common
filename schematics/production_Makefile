@@ -1,38 +1,61 @@
 ifndef NICKNAME
 NICKNAME="Mog"
+#NICKNAME="NOT_MOG"
 endif
 ifndef NUMBER_OF_BOARDS
 NUMBER_OF_BOARDS=5
+#NUMBER_OF_BOARDS="10"
 endif
 ifndef STENCIL
 STENCIL="No"
+#STENCIL="yes"
 endif
 ifndef VIAS
 VIAS="covered"
+#VIAS="uncovered"
 endif
 ifndef SOLDERMASK
 SOLDERMASK="red"
+#SOLDERMASK="green"
+#SOLDERMASK="blue"
+#SOLDERMASK="yellow"
+#SOLDERMASK="black"
+#SOLDERMASK="white"
 endif
 ifndef SILKSCREEN
 SILKSCREEN="white"
+#SILKSCREEN="black"
 endif
 ifndef THICKNESS
 THICKNESS="1.6mm"
+#THICKNESS="0.4mm"
+#THICKNESS="0.6mm"
+#THICKNESS="0.8mm"
+#THICKNESS="1.0mm"
+#THICKNESS="1.2mm"
+#THICKNESS="2.0mm"
 endif
 ifndef FINISH
 FINISH="easy-solder"
+#FINISH="ROHS PB-free solder"
+#FINISH="gold immersion"
 endif
 ifndef COPPER
 COPPER="1 oz"
+#COPPER="2 oz"
 endif
 ifndef SHIPPING
 SHIPPING="DHL"
+#SHIPPING="free"
 endif
 ifndef RUSH
 RUSH="48 hour rush"
+#RUSH="24 hours"
+#RUSH="NO RUSH"
 endif
 ifndef STACK
 STACK=+
+#STACK=-
 endif
 ifndef CUSTOMPCB
 CUSTOMPCB=pcb
@@ -44,7 +67,7 @@ endif
 
 
 
-all: clean update hackvana-zip hackvana-order post_build_cleanup photos
+all: clean update hackvana-zip photos hackvana-order post_build_cleanup 
 
 clean:
 	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order
