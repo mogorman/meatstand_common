@@ -88,8 +88,9 @@ update:
 	)
 
 photos:
-	gschem -q -p -o $(PCBNAME).ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME).sch
-	ps2pdf $(PCBNAME).ps schematic.pdf
+	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).sch > $(PCBNAME)_make.sch
+	gschem -q -p -o $(PCBNAME)_make.ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME)_make.sch
+	ps2pdf $(PCBNAME)_make.ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
 	@sed -i -e 's/HACKVANA_S/12568675309/' $(PCBNAME)_make.pcb
