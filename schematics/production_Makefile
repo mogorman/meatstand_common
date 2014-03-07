@@ -123,6 +123,7 @@ hackvana-zip:
 	@sed -i -e 's/HACKVANA_S/XxXxXxXxXxXx/' $(PCBNAME)_make_mfg.pcb
 	@sed -i -e 's/HACKVANA_C/XxXxXxXxXxXx/' $(PCBNAME)_make_mfg.pcb
 	$(CUSTOMPCB) -x gerber --verbose $(PCBNAME)_make_mfg.pcb
+	@rm -f $(PCBNAME)_make_mfg.fab.gbr
 	$(CUSTOMPCB) -x gerber --all-layers --verbose $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x bom $(PCBNAME)_make.pcb
 	@mv $(PCBNAME)_make.bom bom
