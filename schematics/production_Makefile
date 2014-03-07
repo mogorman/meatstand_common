@@ -104,8 +104,8 @@ photos:
 	convert back.png -trim back.png
 	convert -border 25x25 -bordercolor "#00000000"  front.png front_make.png
 	convert -border 25x25 -bordercolor "#00000000"  back.png back_make.png
-	convert board.png +repage board.png
 	convert $(STACK)append front_make.png back_make.png board.png
+	convert board.png +repage board.png
 
 hackvana-zip:
 	@mkdir gerbers
