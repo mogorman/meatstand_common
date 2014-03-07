@@ -69,6 +69,7 @@ endif
 
 
 
+
 all: clean update hackvana-zip photos hackvana-order post_build_cleanup 
 
 clean:
@@ -89,12 +90,12 @@ update:
 
 photos:
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).sch > $(PCBNAME)_make.sch
-	@sed -i -e 's/GIT_REV/`git rev-parse --short HEAD`/' $(PCBNAME)_make.sch
+	@sed -i -e "s/GIT_REV/`git rev-parse --short HEAD`/" $(PCBNAME)_make.sch
 	gschem -q -p -o $(PCBNAME)_make.ps -s /usr/share/gEDA/scheme/print.scm $(PCBNAME)_make.sch
 	ps2pdf $(PCBNAME)_make.ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@sed -e 's/XXX/$(REV)/' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
-	@sed -i -e 's/GIT_REV/`git rev-parse --short HEAD`/' $(PCBNAME)_make.pcb
+	@sed -i -e "s/GIT_REV/`git rev-parse --short HEAD`/" $(PCBNAME)_make.pcb
 	@sed -i -e 's/HACKVANA_S/12568675309/' $(PCBNAME)_make.pcb
 	@sed -i -e 's/HACKVANA_C/12568675309/' $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x png --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS) --outfile front.png $(PCBNAME)_make.pcb
