@@ -66,9 +66,15 @@ endif
 ifndef AUTHOR
 AUTHOR= Unknown
 endif
-
-
-
+ifndef CUSTOM_DRC
+CUSTOM_DRC=600 600 600 600 1500 600
+endif
+ifndef CUSTOM_GRID
+CUSTOME_GRID=5000.0
+endif
+ifndef CUSTOM_FLAGS
+CUSTOM_FLAGS=showdrc,nameonpcb,uniquename,clearnew,snappin
+endif
 
 all: clean update hackvana-zip photos hackvana-order post_build_cleanup 
 
@@ -83,9 +89,13 @@ update:
 		../meatstand_common/schematics/net2pcb.sh $(PCBNAME); \
 	, \
 		@echo FIRST RUN; \
-		gsch2pcb -v -v --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch; \
+		gsch2pcb -q --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch; \
 		../meatstand_common/schematics/net2pcb.sh $(PCBNAME); \
 		../meatstand_common/schematics/vfont.sh $(PCBNAME); \
+		sed -i -e 's/^PCB\[.*/PCB\["$(PCBNAME)" 600000 500000\]/' $(PCBNAME).pcb; \
+		sed -i -e 's/^DRC\[.*/DRC\[$(CUSTOM_DRC)\]/' $(PCBNAME).pcb; \
+		sed -i -e 's/^Grid\[.*/Grid\[$(CUSTOM_GRID) 0 0 0\]/' $(PCBNAME).pcb; \
+		sed -i -e 's/^Flags.*/Flags\("$(CUSTOM_FLAGS)"\)/' $(PCBNAME).pcb; \
 	)
 
 photos:
