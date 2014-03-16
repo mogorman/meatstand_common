@@ -124,6 +124,7 @@ hackvana-zip:
 	@mkdir hackvana_gerbers
 	@grep -v HACKVANA_S $(PCBNAME).pcb | grep -v  HACKVANA_C > $(PCBNAME)_make.pcb
 	@sed -i -e 's/XXX/$(REV)/' $(PCBNAME)_make.pcb
+	@sed -i -e "s/GIT_REV/`git rev-parse --short HEAD`/" $(PCBNAME)_make.pcb
 	@grep "^FileVersion\[" $(PCBNAME).pcb |head -n1 > $(PCBNAME)_make_mfg.pcb
 	@grep "^PCB\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
 	@grep "^Grid\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
