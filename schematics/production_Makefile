@@ -100,11 +100,13 @@ update:
 
 photos:
 	@sed -e 's/@version@/$(REV)/I' < $(PCBNAME).sch > $(PCBNAME)_make.sch
+	@sed -e 's/@v@/$(REV)/I' < $(PCBNAME).sch > $(PCBNAME)_make.sch
 	@sed -i -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.sch
 	gschem -q -p -o $(PCBNAME)_make.ps -s ./../meatstand_common/schematics/print.scm $(PCBNAME)_make.sch
 	ps2pdf $(PCBNAME)_make.ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@sed -e 's/@version@/$(REV)/I' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
+	@sed -e 's/@v@/$(REV)/I' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
 	@sed -i -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.pcb
 	@sed -i -e 's/@hackvana_s@/12568675309/I' $(PCBNAME)_make.pcb
 	@sed -i -e 's/@hackvana_c@/12568675309/I' $(PCBNAME)_make.pcb
@@ -124,6 +126,7 @@ hackvana-zip:
 	@mkdir hackvana_gerbers
 	@grep -vi @hackvana_s@ $(PCBNAME).pcb | grep -vi @hackvana_c@ > $(PCBNAME)_make.pcb
 	@sed -i -e 's/@version@/$(REV)/I' $(PCBNAME)_make.pcb
+	@sed -i -e 's/@v@/$(REV)/I' $(PCBNAME)_make.pcb
 	@sed -i -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.pcb
 	@grep "^FileVersion\[" $(PCBNAME).pcb |head -n1 > $(PCBNAME)_make_mfg.pcb
 	@grep "^PCB\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
