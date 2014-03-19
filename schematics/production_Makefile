@@ -195,7 +195,7 @@ post_build_cleanup:
 	@rm -f front.png back.png
 	@rm -f $(PCBNAME)_make_mfg.pcb
 	@rm -f $(PCBNAME).net $(PCBNAME).cmd
-	@rm -f $(PCBNAME).ps $(PCBNAME)_make.sch
+	@rm -f $(PCBNAME).ps $(PCBNAME)_make.ps $(PCBNAME)_make.sch
 	@rm -f back_make.png front_make.png $(PCBNAME)_make.pcb
 	@rm -f $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gm1 \
 	    $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto \
