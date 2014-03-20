@@ -151,20 +151,20 @@ hackvana-zip:
 	$(CUSTOMPCB) -x bom --fab-author $(AUTHOR) $(PCBNAME)_make.pcb
 	@mv $(PCBNAME)_make.bom bom
 	@mv $(PCBNAME)_make.xy xy
-	@cp $(PCBNAME)_make.bottom.gbr     hackvana_gerbers/$(PCBNAME).back.gbl
-	@cp $(PCBNAME)_make.bottomsilk.gbr      hackvana_gerbers/$(PCBNAME).backsilk.gbo
-	@cp $(PCBNAME)_make.bottommask.gbr      hackvana_gerbers/$(PCBNAME).backmask.gbs
-	@cp $(PCBNAME)_make.top.gbr         hackvana_gerbers/$(PCBNAME).front.gtl
-	@cp $(PCBNAME)_make.topsilk.gbr     hackvana_gerbers/$(PCBNAME).frontsilk.gto
-	@cp $(PCBNAME)_make.topmask.gbr     hackvana_gerbers/$(PCBNAME).frontmask.gts
-	@cp $(PCBNAME)_make.plated-drill.cnc  hackvana_gerbers/$(PCBNAME).plated-drill.drl
-	@cp $(PCBNAME)_make.unplated-drill.cnc  hackvana_gerbers/$(PCBNAME)_NPTH.drl
-	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).outline.gbr
+	@cp $(PCBNAME)_make.bottom.gbr     hackvana_gerbers/$(PCBNAME).back.gbl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.bottomsilk.gbr      hackvana_gerbers/$(PCBNAME).backsilk.gbo 2>/dev/null ||:
+	@cp $(PCBNAME)_make.bottommask.gbr      hackvana_gerbers/$(PCBNAME).backmask.gbs 2>/dev/null ||:
+	@cp $(PCBNAME)_make.top.gbr         hackvana_gerbers/$(PCBNAME).front.gtl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.topsilk.gbr     hackvana_gerbers/$(PCBNAME).frontsilk.gto 2>/dev/null ||:
+	@cp $(PCBNAME)_make.topmask.gbr     hackvana_gerbers/$(PCBNAME).frontmask.gts 2>/dev/null ||:
+	@cp $(PCBNAME)_make.plated-drill.cnc  hackvana_gerbers/$(PCBNAME).plated-drill.drl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.unplated-drill.cnc  hackvana_gerbers/$(PCBNAME)_NPTH.drl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).outline.gbr 2>/dev/null ||:
 	@cp $(PCBNAME)_make_mfg.bottomsilk.gbr hackvana_gerbers/mfgcode.gbo 2>/dev/null ||:
 	@cp $(PCBNAME)_make_mfg.topsilk.gbr hackvana_gerbers/mfgcode.gto 2>/dev/null ||:
 	@cd hackvana_gerbers/ ; zip ../$(PCBNAME)_rev$(REV).zip *
-	@mv *.gbr gerbers/
-	@mv *.cnc gerbers/
+	@mv *.gbr gerbers/2>/dev/null ||:
+	@mv *.cnc gerbers/ 2>/dev/null ||:
 
 hackvana-order:
 	$(eval X:= $(shell identify front.png| cut -f3 -d' ' | cut -f1 -d'x'))
