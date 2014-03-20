@@ -70,7 +70,7 @@ ifndef CUSTOM_DRC
 CUSTOM_DRC=600 600 600 600 1500 600
 endif
 ifndef CUSTOM_GRID
-CUSTOME_GRID=5000.0
+CUSTOM_GRID=5000.0
 endif
 ifndef CUSTOM_FLAGS
 CUSTOM_FLAGS=showdrc,nameonpcb,uniquename,clearnew,snappin
