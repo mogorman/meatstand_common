@@ -100,7 +100,7 @@ update:
 
 photos:
 	@sed -e 's/@version@/$(REV)/I' < $(PCBNAME).sch > $(PCBNAME)_make.sch
-	@sed -e 's/@v@/$(REV)/I' < $(PCBNAME).sch > $(PCBNAME)_make.sch
+	@sed -i -e 's/@v@/$(REV)/I'  $(PCBNAME)_make.sch
 	@sed -i -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.sch
 	gschem -q -p -o $(PCBNAME)_make.ps -s ./../meatstand_common/schematics/print.scm $(PCBNAME)_make.sch
 	ps2pdf $(PCBNAME)_make.ps schematic.pdf
