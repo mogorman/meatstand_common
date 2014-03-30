@@ -79,7 +79,7 @@ endif
 all: clean update hackvana-zip photos hackvana-order post_build_cleanup 
 
 clean:
-	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order $(PCBNAME)_make.sch
+	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order $(PCBNAME)_make.sch outline.png
 
 update:
 	refdes_renum --gentle $(PCBNAME).sch
@@ -167,11 +167,16 @@ hackvana-zip:
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
 
-hackvana-order:
-	$(eval X:= $(shell identify front.png| cut -f3 -d' ' | cut -f1 -d'x'))
-	$(eval X:= $(shell echo "0.0254*$(X)" | bc))
-	$(eval Y:= $(shell identify front.png| cut -f3 -d' ' | cut -f2 -d'x'))
-	$(eval Y:= $(shell echo "0.0254*$(Y)" | bc))
+hackvana-order1:
+	gerbv -o outline.png -x png hackvana_gerbers/$(PCBNAME).outline.gbr -D 1000
+	convert outline.png -trim outline.png
+
+hackvana-order: hackvana-order1
+	$(eval X:= $(shell identify outline.png| cut -f3 -d' ' | cut -f1 -d'x'))
+	$(eval X:= $(shell echo "0.0254*($(X)-20)" | bc))
+	$(eval Y:= $(shell identify outline.png| cut -f3 -d' ' | cut -f2 -d'x'))
+	$(eval Y:= $(shell echo "0.0254*($(Y)-20)" | bc))
+	@rm outline.png
 	@echo ""
 	@echo ""
 	@echo ""
