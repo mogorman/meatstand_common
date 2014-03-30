@@ -119,7 +119,7 @@ photos:
 	convert $(STACK)append front_make.png back_make.png board.png
 	convert board.png +repage board.png
 	convert -border 0x0 -bordercolor "#000000"  board.png black_board.png
-
+	@rm -f back_make.png back.png front.png front_make.png pig_make.*
 
 hackvana-zip:
 	@mkdir -p gerbers
