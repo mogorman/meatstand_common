@@ -122,8 +122,8 @@ photos:
 
 
 hackvana-zip:
-	@mkdir gerbers
-	@mkdir hackvana_gerbers
+	@mkdir -p gerbers
+	@mkdir -p hackvana_gerbers
 	@grep -vi @hackvana_s@ $(PCBNAME).pcb | grep -vi @hackvana_c@ > $(PCBNAME)_make.pcb
 	@sed -i -e 's/@version@/$(REV)/I' $(PCBNAME)_make.pcb
 	@sed -i -e 's/@v@/$(REV)/I' $(PCBNAME)_make.pcb
@@ -149,7 +149,8 @@ hackvana-zip:
 	@rm -f $(PCBNAME)_make_mfg.fab.gbr
 	$(CUSTOMPCB) -x gerber --fab-author $(AUTHOR) --all-layers --verbose $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x bom --fab-author $(AUTHOR) $(PCBNAME)_make.pcb
-	@mv $(PCBNAME)_make.bom bom
+	@../meatstand_common/schematics/make_bom.sh $(PCBNAME) $(REV) $(AUTHOR)
+	@rm $(PCBNAME)_make.bom
 	@mv $(PCBNAME)_make.xy xy
 	@cp $(PCBNAME)_make.bottom.gbr     hackvana_gerbers/$(PCBNAME).back.gbl 2>/dev/null ||:
 	@cp $(PCBNAME)_make.bottomsilk.gbr      hackvana_gerbers/$(PCBNAME).backsilk.gbo 2>/dev/null ||:
