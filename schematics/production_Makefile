@@ -92,24 +92,27 @@ update:
 		gsch2pcb -q --elements-dir ./../meatstand_common/geda-common/pcb-elements/ $(PCBNAME).sch; \
 		../meatstand_common/schematics/net2pcb.sh $(PCBNAME); \
 		../meatstand_common/schematics/vfont.sh $(PCBNAME); \
-		sed -i -e 's/^PCB\[.*/PCB\["$(PCBNAME)" 600000 500000\]/' $(PCBNAME).pcb; \
-		sed -i -e 's/^DRC\[.*/DRC\[$(CUSTOM_DRC)\]/' $(PCBNAME).pcb; \
-		sed -i -e 's/^Grid\[.*/Grid\[$(CUSTOM_GRID) 0 0 0\]/' $(PCBNAME).pcb; \
-		sed -i -e 's/^Flags.*/Flags\("$(CUSTOM_FLAGS)"\)/' $(PCBNAME).pcb; \
+		sed -i -e 's/^PCB\[.*/PCB\["$(PCBNAME)" 600000 500000\]/' \
+		 -e 's/^DRC\[.*/DRC\[$(CUSTOM_DRC)\]/' \
+		 -e 's/^Grid\[.*/Grid\[$(CUSTOM_GRID) 0 0 0\]/' \
+		 -e 's/^Flags.*/Flags\("$(CUSTOM_FLAGS)"\)/' $(PCBNAME).pcb; \
 	)
 
 photos:
-	@sed -e 's/@version@/$(REV)/I' < $(PCBNAME).sch > $(PCBNAME)_make.sch
-	@sed -i -e 's/@v@/$(REV)/I'  $(PCBNAME)_make.sch
-	@sed -i -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.sch
+	@cp $(PCBNAME).sch $(PCBNAME)_make.sch
+	@sed -i -e 's/@version@/$(REV)/I' \
+	 -e 's/@v@/$(REV)/I' \
+	 -e "s/@git@/`git rev-parse --short HEAD`/I" \
+	 $(PCBNAME)_make.sch
 	gschem -q -p -o $(PCBNAME)_make.ps -s ./../meatstand_common/schematics/print.scm $(PCBNAME)_make.sch
 	ps2pdf $(PCBNAME)_make.ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
-	@sed -e 's/@version@/$(REV)/I' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
-	@sed -e 's/@v@/$(REV)/I' < $(PCBNAME).pcb > $(PCBNAME)_make.pcb
-	@sed -i -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.pcb
-	@sed -i -e 's/@hackvana_s@/12568675309/I' $(PCBNAME)_make.pcb
-	@sed -i -e 's/@hackvana_c@/12568675309/I' $(PCBNAME)_make.pcb
+	@cp $(PCBNAME).pcb $(PCBNAME)_make.pcb
+	@sed -i -e 's/@version@/$(REV)/I' \
+	 -e 's/@v@/$(REV)/I' \
+	 -e "s/@git@/`git rev-parse --short HEAD`/I" \
+	 -e 's/@hackvana_s@/12568675309/I' \
+	 -e 's/@hackvana_c@/12568675309/I' $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x png --use-alpha --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS) --outfile front.png $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x png --use-alpha --dpi 1000 --photo-mode $(CUSTOMPCB_ARGS) --photo-flip-x --outfile back.png  $(PCBNAME)_make.pcb
 	convert front.png -trim front.png
@@ -125,9 +128,9 @@ hackvana-zip:
 	@mkdir -p gerbers
 	@mkdir -p hackvana_gerbers
 	@grep -vi @hackvana_s@ $(PCBNAME).pcb | grep -vi @hackvana_c@ > $(PCBNAME)_make.pcb
-	@sed -i -e 's/@version@/$(REV)/I' $(PCBNAME)_make.pcb
-	@sed -i -e 's/@v@/$(REV)/I' $(PCBNAME)_make.pcb
-	@sed -i -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.pcb
+	@sed -i -e 's/@version@/$(REV)/I' \
+	 -e 's/@v@/$(REV)/I' \
+	 -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.pcb
 	@grep "^FileVersion\[" $(PCBNAME).pcb |head -n1 > $(PCBNAME)_make_mfg.pcb
 	@grep "^PCB\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
 	@grep "^Grid\[" $(PCBNAME).pcb |head -n1 >> $(PCBNAME)_make_mfg.pcb
@@ -143,8 +146,8 @@ hackvana-zip:
 	@echo '(' >> $(PCBNAME)_make_mfg.pcb
 	@grep -i @hackvana_s@ $(PCBNAME).pcb|head -n1 >>$(PCBNAME)_make_mfg.pcb
 	@echo ')' >> $(PCBNAME)_make_mfg.pcb
-	@sed -i -e 's/@hackvana_s@/XxXxXxXxXxXx/I' $(PCBNAME)_make_mfg.pcb
-	@sed -i -e 's/@hackvana_c@/XxXxXxXxXxXx/I' $(PCBNAME)_make_mfg.pcb
+	@sed -i -e 's/@hackvana_s@/XxXxXxXxXxXx/I' \
+	 -e 's/@hackvana_c@/XxXxXxXxXxXx/I' $(PCBNAME)_make_mfg.pcb
 	$(CUSTOMPCB) -x gerber --fab-author $(AUTHOR) --verbose $(PCBNAME)_make_mfg.pcb
 	@rm -f $(PCBNAME)_make_mfg.fab.gbr
 	$(CUSTOMPCB) -x gerber --fab-author $(AUTHOR) --all-layers --verbose $(PCBNAME)_make.pcb
