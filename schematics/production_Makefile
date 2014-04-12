@@ -122,7 +122,7 @@ photos:
 	convert $(STACK)append front_make.png back_make.png board.png
 	convert board.png +repage board.png
 	convert -border 0x0 -bordercolor "#000000"  board.png black_board.png
-	@rm -f back_make.png back.png front.png front_make.png pig_make.*
+	@rm -f back_make.png back.png front.png front_make.png $(PCBNAME)_make.*
 
 hackvana-zip:
 	@mkdir -p gerbers
@@ -152,7 +152,7 @@ hackvana-zip:
 	@rm -f $(PCBNAME)_make_mfg.fab.gbr
 	$(CUSTOMPCB) -x gerber --fab-author $(AUTHOR) --all-layers --verbose $(PCBNAME)_make.pcb
 	$(CUSTOMPCB) -x bom --fab-author $(AUTHOR) $(PCBNAME)_make.pcb
-	@../meatstand_common/schematics/make_bom.sh $(PCBNAME) $(REV) $(AUTHOR)
+	@../meatstand_common/schematics/make_bom.sh "$(PCBNAME)" "$(REV)" "$(AUTHOR)"
 	@rm $(PCBNAME)_make.bom
 	@mv $(PCBNAME)_make.xy xy
 	@cp $(PCBNAME)_make.bottom.gbr     hackvana_gerbers/$(PCBNAME).back.gbl 2>/dev/null ||:

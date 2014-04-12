@@ -3,7 +3,7 @@ Title=$1
 Version=$2
 Author=${*:3}
 cp `dirname $0`/attribs ./
-gnetlist -g bom -o bom_temp pig.sch
+gnetlist -g bom -o bom_temp "$1.sch"
 awk -F"\t" '{print $5"\t"$1"\t"$2"\t"$3"\t"$4}' bom_temp|grep -v ^0 | \
 awk -F"\t" '{print $5"\t"$3"\t"$4}' |grep -v ^unknown| grep -v ^manufacturer-part | \
 sort | uniq -c| sort -nr |sed 's/^ *//'| \
