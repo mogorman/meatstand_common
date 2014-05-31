@@ -176,9 +176,9 @@ hackvana-order1:
 
 hackvana-order: hackvana-order1
 	$(eval X:= $(shell identify outline.png| cut -f3 -d' ' | cut -f1 -d'x'))
-	$(eval X:= $(shell echo "0.0254*($(X)-20)" | bc))
+	$(eval X:= $(shell echo "0.0254*($(X))" | bc))
 	$(eval Y:= $(shell identify outline.png| cut -f3 -d' ' | cut -f2 -d'x'))
-	$(eval Y:= $(shell echo "0.0254*($(Y)-20)" | bc))
+	$(eval Y:= $(shell echo "0.0254*($(Y))" | bc))
 	@rm outline.png
 	@echo ""
 	@echo ""
