@@ -149,6 +149,7 @@ oshpark-zip:
 	@cd oshpark_gerbers/ ; zip ../oshpark_$(PCBNAME)_rev$(REV).zip *
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
+	@rm -rf oshpark_gerbers
 
 hackvana-zip:
 	@mkdir -p gerbers
@@ -195,6 +196,7 @@ hackvana-zip:
 	@cd hackvana_gerbers/ ; zip ../hackvana_$(PCBNAME)_rev$(REV).zip *
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
+	@rm -rf hackvana_gerbers
 
 hackvana-order1:
 	gerbv -o outline.png -x png hackvana_gerbers/$(PCBNAME).outline.gbr -D 1000
