@@ -76,10 +76,10 @@ ifndef CUSTOM_FLAGS
 CUSTOM_FLAGS=showdrc,nameonpcb,uniquename,clearnew,snappin
 endif
 
-all: clean update hackvana-zip hackvana-order post_build_cleanup 
+all: clean update hackvana-zip oshpark-zip hackvana-order post_build_cleanup 
 
 clean:
-	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order $(PCBNAME)_make.sch outline.png
+	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order $(PCBNAME)_make.sch outline.png oshpark_gerbers
 
 update:
 	refdes_renum --gentle $(PCBNAME).sch
@@ -124,6 +124,32 @@ photos:
 	convert -border 0x0 -bordercolor "#000000"  board.png black_board.png
 	@rm -f back_make.png back.png front.png front_make.png $(PCBNAME)_make.*
 
+oshpark-zip:
+	@mkdir -p gerbers
+	@mkdir -p oshpark_gerbers
+	@grep -vi @hackvana_s@ $(PCBNAME).pcb | grep -vi @hackvana_c@ > $(PCBNAME)_make.pcb
+	@sed -i -e 's/@version@/$(REV)/I' \
+	 -e 's/@v@/$(REV)/I' \
+	 -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x gerber --fab-author $(AUTHOR) --all-layers --verbose $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x bom --fab-author $(AUTHOR) $(PCBNAME)_make.pcb
+	@../meatstand_common/schematics/make_bom.sh "$(PCBNAME)" "$(REV)" $(AUTHOR)
+	@rm $(PCBNAME)_make.bom
+	@mv $(PCBNAME)_make.xy xy
+	@cp $(PCBNAME)_make.bottom.gbr     oshpark_gerbers/$(PCBNAME).back.gbl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.bottomsilk.gbr      oshpark_gerbers/$(PCBNAME).backsilk.gbo 2>/dev/null ||:
+	@cp $(PCBNAME)_make.bottommask.gbr      oshpark_gerbers/$(PCBNAME).backmask.gbs 2>/dev/null ||:
+	@cp $(PCBNAME)_make.top.gbr         oshpark_gerbers/$(PCBNAME).front.gtl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.topsilk.gbr     oshpark_gerbers/$(PCBNAME).frontsilk.gto 2>/dev/null ||:
+	@cp $(PCBNAME)_make.topmask.gbr     oshpark_gerbers/$(PCBNAME).frontmask.gts 2>/dev/null ||:
+	@head -n -1 $(PCBNAME)_make.plated-drill.cnc > oshpark_gerbers/$(PCBNAME).xln
+	@tail -n +3 $(PCBNAME)_make.unplated-drill.cnc 2> /dev/null | head -n -1 >> oshpark_gerbers/$(PCBNAME).xln 2> /dev/null
+	@echo M30 >> oshpark_gerbers/$(PCBNAME).xln
+	@cp $(PCBNAME)_make.outline.gbr oshpark_gerbers/$(PCBNAME).outline.gbr 2>/dev/null ||:
+	@cd oshpark_gerbers/ ; zip ../oshpark_$(PCBNAME)_rev$(REV).zip *
+	@mv *.gbr gerbers/ 2>/dev/null ||:
+	@mv *.cnc gerbers/ 2>/dev/null ||:
+
 hackvana-zip:
 	@mkdir -p gerbers
 	@mkdir -p hackvana_gerbers
@@ -166,7 +192,7 @@ hackvana-zip:
 	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).outline.gbr 2>/dev/null ||:
 	@cp $(PCBNAME)_make_mfg.bottomsilk.gbr hackvana_gerbers/mfgcode.gbo 2>/dev/null ||:
 	@cp $(PCBNAME)_make_mfg.topsilk.gbr hackvana_gerbers/mfgcode.gto 2>/dev/null ||:
-	@cd hackvana_gerbers/ ; zip ../$(PCBNAME)_rev$(REV).zip *
+	@cd hackvana_gerbers/ ; zip ../hackvana_$(PCBNAME)_rev$(REV).zip *
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
 
