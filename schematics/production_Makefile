@@ -199,7 +199,7 @@ hackvana-zip:
 	@rm -rf hackvana_gerbers
 
 hackvana-order1:
-	gerbv -o outline.png -x png gerbers/$(PCBNAME).outline.gbr -D 1000
+	gerbv -o outline.png -x png gerbers/$(PCBNAME)_make.outline.gbr -D 1000
 	convert outline.png -trim outline.png
 
 hackvana-order: hackvana-order1
