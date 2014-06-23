@@ -145,7 +145,7 @@ oshpark-zip:
 	@head -n -1 $(PCBNAME)_make.plated-drill.cnc > oshpark_gerbers/$(PCBNAME).xln
 	@tail -n +3 $(PCBNAME)_make.unplated-drill.cnc 2> /dev/null | head -n -1 >> oshpark_gerbers/$(PCBNAME).xln 2> /dev/null
 	@echo M30 >> oshpark_gerbers/$(PCBNAME).xln
-	@cp $(PCBNAME)_make.outline.gbr oshpark_gerbers/$(PCBNAME).outline.gbr 2>/dev/null ||:
+	@cp $(PCBNAME)_make.outline.gbr oshpark_gerbers/$(PCBNAME).outline.gm1 2>/dev/null ||:
 	@cd oshpark_gerbers/ ; zip ../oshpark_$(PCBNAME)_rev$(REV).zip *
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
@@ -190,10 +190,10 @@ hackvana-zip:
 	@cp $(PCBNAME)_make.topmask.gbr     hackvana_gerbers/$(PCBNAME).frontmask.gts 2>/dev/null ||:
 	@cp $(PCBNAME)_make.plated-drill.cnc  hackvana_gerbers/$(PCBNAME).plated-drill.drl 2>/dev/null ||:
 	@cp $(PCBNAME)_make.unplated-drill.cnc  hackvana_gerbers/$(PCBNAME)_NPTH.drl 2>/dev/null ||:
-	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).outline.gbr 2>/dev/null ||:
+	@cp $(PCBNAME)_make.outline.gbr hackvana_gerbers/$(PCBNAME).outline.gm1 2>/dev/null ||:
 	@cp $(PCBNAME)_make_mfg.bottomsilk.gbr hackvana_gerbers/mfgcode.gbo 2>/dev/null ||:
 	@cp $(PCBNAME)_make_mfg.topsilk.gbr hackvana_gerbers/mfgcode.gto 2>/dev/null ||:
-	@cd hackvana_gerbers/ ; zip ../hackvana_$(PCBNAME)_rev$(REV).zip *
+	@cd hackvana_gerbers/ ; zip ../$(PCBNAME)_rev$(REV).zip *
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
 	@rm -rf hackvana_gerbers
