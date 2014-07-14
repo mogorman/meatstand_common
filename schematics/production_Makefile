@@ -104,7 +104,7 @@ photos:
 	 -e 's/@v@/$(REV)/I' \
 	 -e "s/@git@/`git rev-parse --short HEAD`/I" \
 	 $(PCBNAME)_make.sch
-	xvfb-run gschem -q -p -o $(PCBNAME)_make.ps -s ./../meatstand_common/schematics/print.scm $(PCBNAME)_make.sch
+	xvfb-run -a gschem -q -p -o $(PCBNAME)_make.ps -s ./../meatstand_common/schematics/print.scm $(PCBNAME)_make.sch
 	ps2pdf $(PCBNAME)_make.ps schematic.pdf
 	pdftoppm -png schematic.pdf > schematic.png
 	@cp $(PCBNAME).pcb $(PCBNAME)_make.pcb
