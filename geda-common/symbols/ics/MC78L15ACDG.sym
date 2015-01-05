@@ -1,0 +1,96 @@
+v 20130925 2
+T 200 1100 8 10 1 1 0 0 1
+name=MC78L15ACDG
+P 0 900 200 900 1 0 0
+{
+T 0 900 5 10 0 0 180 6 1
+pintype=unknown
+T 255 895 5 10 1 1 0 0 1
+pinlabel=In
+T 105 945 5 10 1 1 0 6 1
+pinnumber=8
+T 0 900 5 10 0 0 180 6 1
+pinseq=8
+}
+T 2100 1100 8 10 1 1 0 0 1
+refdes=U?
+T 1100 600 8 10 0 1 0 0 1
+footprint=soic-8
+P 2500 900 2300 900 1 0 0
+{
+T 2500 900 5 10 0 0 0 6 1
+pintype=unknown
+T 2245 895 5 10 1 1 0 6 1
+pinlabel=Out
+T 2395 945 5 10 1 1 0 0 1
+pinnumber=1
+T 2500 900 5 10 0 0 0 6 1
+pinseq=1
+}
+P 400 0 400 200 1 0 0
+{
+T 400 0 5 10 0 0 270 6 1
+pintype=unknown
+T 400 255 5 10 1 1 90 0 1
+pinlabel=Gnd
+T 350 105 5 10 1 1 90 6 1
+pinnumber=2
+T 400 0 5 10 0 0 270 6 1
+pinseq=2
+}
+P 600 0 600 200 1 0 0
+{
+T 600 0 5 10 0 0 270 6 1
+pintype=unknown
+T 600 255 5 10 1 1 90 0 1
+pinlabel=Gnd
+T 550 105 5 10 1 1 90 6 1
+pinnumber=3
+T 600 0 5 10 0 0 270 6 1
+pinseq=3
+}
+P 800 0 800 200 1 0 0
+{
+T 800 0 5 10 0 0 270 6 1
+pintype=unknown
+T 800 255 5 10 1 1 90 0 1
+pinlabel=Gnd
+T 750 105 5 10 1 1 90 6 1
+pinnumber=6
+T 800 0 5 10 0 0 270 6 1
+pinseq=6
+}
+P 1000 0 1000 200 1 0 0
+{
+T 1000 0 5 10 0 0 270 6 1
+pintype=unknown
+T 1000 255 5 10 1 1 90 0 1
+pinlabel=Gnd
+T 950 105 5 10 1 1 90 6 1
+pinnumber=7
+T 1000 0 5 10 0 0 270 6 1
+pinseq=7
+}
+P 2000 0 2000 200 1 0 0
+{
+T 2000 0 5 10 0 0 270 6 1
+pintype=unknown
+T 2000 255 5 10 1 1 90 0 1
+pinlabel=NC
+T 1950 105 5 10 1 1 90 6 1
+pinnumber=4
+T 2000 0 5 10 0 0 270 6 1
+pinseq=4
+}
+P 2200 0 2200 200 1 0 0
+{
+T 2200 0 5 10 0 0 270 6 1
+pintype=unknown
+T 2200 255 5 10 1 1 90 0 1
+pinlabel=NC
+T 2150 105 5 10 1 1 90 6 1
+pinnumber=5
+T 2200 0 5 10 0 0 270 6 1
+pinseq=5
+}
+B 200 200 2100 900 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
