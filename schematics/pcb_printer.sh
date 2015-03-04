@@ -1,8 +1,8 @@
 #!/bin/bash
-PCB=$1
+Keep_out_minimum=$1
+PCB=$2
 Tmp=${PCB}.tmp
-Keep_out_minimum=25.00
-echo I need to actually write the sed script for this
+
 rm $Tmp
 touch $Tmp
 export IFS=

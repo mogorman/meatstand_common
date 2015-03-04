@@ -57,6 +57,11 @@ ifndef STACK
 STACK=+
 #STACK=-
 endif
+ifndef KEEP_OUT
+NICKNAME="25"
+#NICKNAME="NOT_MOG"
+endif
+i
 ifndef CUSTOMPCB
 CUSTOMPCB=pcb
 endif
@@ -130,7 +135,8 @@ photos:
 local:
 	@mkdir -p gerbers
 	@grep -vi @hackvana_s@ $(PCBNAME).pcb | grep -vi @hackvana_c@ > $(PCBNAME)_make.pcb
-	@../meatstand_common/schematics/pcb_printer.sh  $(PCBNAME)_make.pcb
+	@../meatstand_common/schematics/pcb_printer.sh $(KEEP_OUT)  $(PCBNAME)_make.pcb
+	@mv $(PCBNAME)_make.pcb.tmp $(PCBNAME)_make.pcb
 
 oshpark-zip:
 	@mkdir -p gerbers
