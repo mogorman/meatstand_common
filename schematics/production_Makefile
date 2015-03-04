@@ -79,7 +79,7 @@ ifndef REV
 REV=$(shell git describe  --abbrev=0 --tags > /dev/null 2>&1  && git describe --abbrev=0 --tags || echo "0.0")
 endif
 
-all: clean update hackvana-zip oshpark-zip hackvana-order post_build_cleanup 
+all: clean update hackvana-zip local oshpark-zip hackvana-order post_build_cleanup 
 
 clean:
 	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order $(PCBNAME)_make.sch outline.png oshpark_gerbers
@@ -126,6 +126,11 @@ photos:
 	convert board.png +repage board.png
 	convert -border 0x0 -bordercolor "#000000"  board.png black_board.png
 	@rm -f back_make.png back.png front.png front_make.png $(PCBNAME)_make.*
+
+local:
+	@mkdir -p gerbers
+	@grep -vi @hackvana_s@ $(PCBNAME).pcb | grep -vi @hackvana_c@ > $(PCBNAME)_make.pcb
+	@../meatstand_common/schematics/pcb_printer.sh  $(PCBNAME)_make.pcb
 
 oshpark-zip:
 	@mkdir -p gerbers
