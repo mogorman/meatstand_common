@@ -155,11 +155,11 @@ local:
 	convert local_gerbers/front_make.svg -trim local_gerbers/front_make2.svg
 	convert local_gerbers/back_make.svg -trim local_gerbers/back_make2.svg
 
-	convert -border 35x35 -bordercolor "#FFFFFFFF"  local_gerbers/front_make2.svg local_gerbers/front.png
-	convert -border 35x35 -bordercolor "#FFFFFFFF"  local_gerbers/back_make2.svg local_gerbers/back.png
+	convert -border 35x35 -bordercolor "#FFFFFFFF" -units PixelsPerInch -density 1200 local_gerbers/front_make2.svg local_gerbers/front.png
+	convert -border 35x35 -bordercolor "#FFFFFFFF" -units PixelsPerInch -density 1200 local_gerbers/back_make2.svg local_gerbers/back.png
 
-	convert +append local_gerbers/front.png local_gerbers/back.png local_gerbers/long_board.png
-	convert -append local_gerbers/front.png local_gerbers/back.png local_gerbers/wide_board.png
+	convert +append local_gerbers/front.png local_gerbers/back.png local_gerbers/wide_board.png
+	convert -append local_gerbers/front.png local_gerbers/back.png local_gerbers/long_board.png
 
 	convert local_gerbers/wide_board.png +repage local_gerbers/wide_board.png
 	convert local_gerbers/long_board.png +repage local_gerbers/long_board.png
