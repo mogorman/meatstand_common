@@ -149,7 +149,24 @@ local:
 	@cp $(PCBNAME)_make.top.gbr        local_gerbers/$(PCBNAME).front.gtl 2>/dev/null ||:
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
-	gerbv --dpi=1200 --foreground="#000000" --background="#FFFFFF" -x svg -a local_gerbers/${PCBNAME}.front.gtl -o test2.svg
+	gerbv --dpi=1200 --foreground="#000000" -x svg -a local_gerbers/${PCBNAME}.front.gtl -o local_gerbers/front_make.svg
+	gerbv --dpi=1200 --foreground="#000000" -x svg -a local_gerbers/${PCBNAME}.back.gbl -o local_gerbers/back_make.svg
+
+	convert local_gerbers/front_make.svg -trim local_gerbers/front_make2.svg
+	convert local_gerbers/back_make.svg -trim local_gerbers/back_make2.svg
+
+	convert -border 35x35 -bordercolor "#FFFFFFFF"  local_gerbers/front_make2.svg local_gerbers/front.png
+	convert -border 35x35 -bordercolor "#FFFFFFFF"  local_gerbers/back_make2.svg local_gerbers/back.png
+
+	convert +append local_gerbers/front.png local_gerbers/back.png local_gerbers/long_board.png
+	convert -append local_gerbers/front.png local_gerbers/back.png local_gerbers/wide_board.png
+
+	convert local_gerbers/wide_board.png +repage local_gerbers/wide_board.png
+	convert local_gerbers/long_board.png +repage local_gerbers/long_board.png
+
+	convert local_gerbers/front.png +repage local_gerbers/front.png
+	convert local_gerbers/back.png +repage local_gerbers/back.png
+	@rm -f local_gerbers/back_make.svg local_gerbers/back_make2.svg local_gerbres/back_make.svg  local_gerbers/front_make2.svg  local_gerbers/front_make.svg   local_gerbers/$(PCBNAME).back.gbl  local_gerbers/$(PCBNAME).front.gtl
 
 oshpark-zip:
 	@mkdir -p gerbers
