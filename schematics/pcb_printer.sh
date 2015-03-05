@@ -2,8 +2,7 @@
 Keep_out_minimum=$1
 PCB=$2
 Tmp=${PCB}.tmp
-
-rm $Tmp
+rm -f $Tmp
 touch $Tmp
 export IFS=
 while read -r  Line
@@ -72,3 +71,4 @@ do
     	echo "$Line" >> $Tmp
     fi 
 done < $PCB
+

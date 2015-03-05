@@ -58,10 +58,9 @@ STACK=+
 #STACK=-
 endif
 ifndef KEEP_OUT
-NICKNAME="25"
+KEEP_OUT="25"
 #NICKNAME="NOT_MOG"
 endif
-i
 ifndef CUSTOMPCB
 CUSTOMPCB=pcb
 endif
@@ -87,7 +86,7 @@ endif
 all: clean update hackvana-zip local oshpark-zip hackvana-order post_build_cleanup 
 
 clean:
-	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order $(PCBNAME)_make.sch outline.png oshpark_gerbers
+	@rm -rf *.gbr *.cnc bom xy *.zip *.png *.pdf *.ps hackvana_gerbers gerbers  $(PCBNAME).gbl $(PCBNAME).gbo $(PCBNAME).gbs $(PCBNAME).gtl $(PCBNAME).gto $(PCBNAME).gts $(PCBNAME).txt fab.gbr $(PCBNAME).gm1 $(PCBNAME).drl $(PCBNAME)_NPTH.drl $(PCBNAME)_make.pcb $(PCBNAME)_make_mfg.pcb $(PCBNAME).pcb.bak $(PCBNAME).new.pcb  $(PCBNAME).cmd $(PCBNAME).net head.pcb tail.pcb netlist.pcb order $(PCBNAME)_make.sch outline.png oshpark_gerbers local_gerbers $(PCBNAME)_make.pcb.tmp
 
 update:
 	refdes_renum --gentle $(PCBNAME).sch
@@ -134,9 +133,23 @@ photos:
 
 local:
 	@mkdir -p gerbers
+	@mkdir -p local_gerbers
 	@grep -vi @hackvana_s@ $(PCBNAME).pcb | grep -vi @hackvana_c@ > $(PCBNAME)_make.pcb
 	@../meatstand_common/schematics/pcb_printer.sh $(KEEP_OUT)  $(PCBNAME)_make.pcb
 	@mv $(PCBNAME)_make.pcb.tmp $(PCBNAME)_make.pcb
+	@sed -i -e 's/@version@/$(REV)/I' \
+	 -e 's/@v@/$(REV)/I' \
+	 -e "s/@git@/`git rev-parse --short HEAD`/I" $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x gerber --fab-author $(AUTHOR) --all-layers --verbose $(PCBNAME)_make.pcb
+	$(CUSTOMPCB) -x bom --fab-author $(AUTHOR) $(PCBNAME)_make.pcb
+	@../meatstand_common/schematics/make_bom.sh "$(PCBNAME)" "$(REV)" $(AUTHOR)
+	@rm $(PCBNAME)_make.bom
+	@mv $(PCBNAME)_make.xy xy
+	@cp $(PCBNAME)_make.bottom.gbr     local_gerbers/$(PCBNAME).back.gbl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.top.gbr        local_gerbers/$(PCBNAME).front.gtl 2>/dev/null ||:
+	@mv *.gbr gerbers/ 2>/dev/null ||:
+	@mv *.cnc gerbers/ 2>/dev/null ||:
+	gerbv --dpi=1200 --foreground="#000000" --background="#FFFFFF" -x svg -a local_gerbers/${PCBNAME}.front.gtl -o test2.svg
 
 oshpark-zip:
 	@mkdir -p gerbers
