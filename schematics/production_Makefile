@@ -147,16 +147,23 @@ local:
 	@mv $(PCBNAME)_make.xy xy
 	@cp $(PCBNAME)_make.bottom.gbr     local_gerbers/$(PCBNAME).back.gbl 2>/dev/null ||:
 	@cp $(PCBNAME)_make.top.gbr        local_gerbers/$(PCBNAME).front.gtl 2>/dev/null ||:
+	@cp $(PCBNAME)_make.outline.gbr        local_gerbers/$(PCBNAME).outline 2>/dev/null ||:
 	@mv *.gbr gerbers/ 2>/dev/null ||:
 	@mv *.cnc gerbers/ 2>/dev/null ||:
-	gerbv --dpi=1200 --foreground="#000000" -x svg -a local_gerbers/${PCBNAME}.front.gtl -o local_gerbers/front_make.svg
-	gerbv --dpi=1200 --foreground="#000000" -x svg -a local_gerbers/${PCBNAME}.back.gbl -o local_gerbers/back_make.svg
+#	gerbv --dpi=1200 --foreground="#000000" -x svg -a local_gerbers/${PCBNAME}.front.gtl -o local_gerbers/front_make.svg
+#	gerbv --dpi=1200 --foreground="#000000" -x svg -a local_gerbers/${PCBNAME}.back.gbl -o local_gerbers/back_make.svg
+	gerbv --dpi=1200x1200 --foreground="#000000FF" --background"=#FFFFFF" -x png local_gerbers/${PCBNAME}.front.gtl -o local_gerbers/front_make.png
+	gerbv --dpi=1200x1200 --foreground="#000000FF" --background="#FFFFFF" -x png local_gerbers/${PCBNAME}.back.gbl -o local_gerbers/back_make.png
 
-	convert local_gerbers/front_make.svg -trim local_gerbers/front_make2.svg
-	convert local_gerbers/back_make.svg -trim local_gerbers/back_make2.svg
+	gerbv --dpi=1200x1200 --foreground="#000000FF" --background="#FFFFFF" -x png local_gerbers/${PCBNAME}.outline -o local_gerbers/outline.png
 
-	convert -border 35x35 -bordercolor "#FFFFFFFF" -units PixelsPerInch -density 1200 local_gerbers/front_make2.svg local_gerbers/front.png
-	convert -border 35x35 -bordercolor "#FFFFFFFF" -units PixelsPerInch -density 1200 local_gerbers/back_make2.svg local_gerbers/back.png
+	convert local_gerbers/front_make.png -trim local_gerbers/front_make2.png
+	convert local_gerbers/back_make.png -trim local_gerbers/back_make2.png
+
+	convert local_gerbers/outline.png -trim local_gerbers/outline2.png
+
+	convert -border 25x25 -bordercolor "#FFFFFFFF" local_gerbers/front_make2.png local_gerbers/front.png
+	convert -border 25x25 -bordercolor "#FFFFFFFF" local_gerbers/back_make2.png local_gerbers/back.png
 
 	convert +append local_gerbers/front.png local_gerbers/back.png local_gerbers/wide_board.png
 	convert -append local_gerbers/front.png local_gerbers/back.png local_gerbers/long_board.png
@@ -166,7 +173,9 @@ local:
 
 	convert local_gerbers/front.png +repage local_gerbers/front.png
 	convert local_gerbers/back.png +repage local_gerbers/back.png
-	@rm -f local_gerbers/back_make.svg local_gerbers/back_make2.svg local_gerbres/back_make.svg  local_gerbers/front_make2.svg  local_gerbers/front_make.svg   local_gerbers/$(PCBNAME).back.gbl  local_gerbers/$(PCBNAME).front.gtl
+
+#	@rm -f local_gerbers/spam.front.gtl local_gerbers/back_make2.png local_gerbers/back_make3.png local_gerbers/spam.back.gbl local_gerbers/front_make.png local_gerbers/front_make3.png local_gerbers/back_make.png local_gerbers/front_make2.png
+
 
 oshpark-zip:
 	@mkdir -p gerbers
